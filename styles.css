@@ -1,3 +1,7 @@
+#Home {
+  margin-bottom: 100px;
+}
+
 body {
   font-family: Arial, sans-serif;
   background-color: #f4f4f9;
@@ -6,6 +10,10 @@ body {
   margin-left: 3vw; /* 네비게이션 바 너비만큼 여백 추가 */
   padding: 0;
 
+}
+
+p {
+  font-size: 20px;
 }
 
 h2 {
@@ -45,7 +53,12 @@ section {
   padding: 15px;
   border-radius: 8px;
   text-align: center;
+  transition: box-shadow 0.3s ease;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 수평, 수직 이동, 흐림 정도, 색상 */
+}
+
+.card:hover {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
 }
 
 .pollutants {
@@ -63,7 +76,12 @@ section {
   padding: 10px;
   border-radius: 8px;
   text-align: center;
+  transition: box-shadow 0.3s ease;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 수평, 수직 이동, 흐림 정도, 색상 */
+}
+
+.pollutant:hover {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
 }
 
 .chart-container {
@@ -71,28 +89,29 @@ section {
   justify-content: center;
   align-items: center;
   margin-top: 30px;
+  margin-bottom: 100px;
 }
 
 .chart-deck {
   display: flex;
   justify-content: space-between;
-  width: 80%;
+  width: 100%;
   perspective: 1500px; /* 3D 효과 */
 }
 
 .chart-card {
-  width: 30%;
+  width:45%;
   transition: transform 0.5s ease, box-shadow 0.3s ease;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .chart-card:hover {
-  transform: translateZ(20px) rotateY(10deg); /* 카드가 3D로 움직이는 효과 */
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
 }
 
 /* 주 카드 (가장 앞에 위치한 카드) */
 .main-chart {
+  height: 500px;
   z-index: 2; /* 맨 앞에 오도록 */
 }
 
@@ -107,25 +126,17 @@ section {
 }
 
 .chart-card-body {
-  padding: 20px;
+  padding: 10px;
 }
-
-@media (max-width: 1024px) {
-  #chartContainer {
-    flex: 1 1 calc(50% - 20px); /* 2 charts per row on medium screens */
-  }
-}
-
-@media (max-width: 768px) {
-  #chartContainer {
-    flex: 1 1 100%; /* Stacks charts vertically on small screens */
-  }
-}
-
 
 canvas {
-  width: 100%; /* 캔버스가 컨테이너에 맞게 확장되도록 */
+  width: auto; /* 캔버스가 컨테이너에 맞게 확장되도록 */
   height: auto; /* 비율에 맞게 세로 크기 자동 조정 */
+}
+
+canvas.Bar {
+  width: auto;
+  height: 1200px;
 }
 
 footer {

@@ -20,8 +20,6 @@ document.addEventListener('DOMContentLoaded', () => {
     view.setCenter(coordinates);
     view.setZoom(12); // 원하는 줌 레벨로 설정
   }
-  
-
 
   function getCityName(latitude, longitude) {
     const ApiKey = '737bbe2e76644c178038fcaebc838642'; // OpenCage API key
@@ -101,6 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         },
         'y-axis-2': {
+          beginAtZero: true,
           type: 'linear',
           position: 'right',
           ticks: {
@@ -149,7 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
         x: {
           ticks: {
             font: {
-              size: 16 // Adjust the font size for x-axis labels
+              size: 10 // Adjust the font size for x-axis labels
             }
           }
         }
@@ -237,9 +236,9 @@ document.addEventListener('DOMContentLoaded', () => {
             // Create the card content for each day
             card.innerHTML = `
                 <p class="date" style="font-size: 30px; font-weight: bold;">${dateString}</p>
-                <img src="${weatherIconUrl}" alt="${dayData.day.condition.text}" style="display: block; margin: 0 auto; width: 50px; height: 50px;">
-                <p>Temp: <span class="temperature" style="font-size: 30px; font-weight: bold;">${dayData.day.avgtemp_c}</span> °C</p>
-                <p>Humi: <span class="humidity" style="font-size: 30px; font-weight: bold;">${dayData.day.avghumidity}</span> %</p>
+                <img src="${weatherIconUrl}" alt="${dayData.day.condition.text}" style="display: block; margin: 0 auto; width: 100px; height: 100px;">
+                <p><i class="fas fa-thermometer-half" style="font-size: 30px;"></i> <span class="temperature" style="font-size: 30px; font-weight: bold;">${dayData.day.avgtemp_c}</span> °C</p>
+                <p><i class="fas fa-tint" style="font-size: 30px;"></i> <span class="humidity" style="font-size: 30px; font-weight: bold;">${dayData.day.avghumidity}</span> %</p>
             `;
 
             // Append the card to the container
@@ -318,19 +317,19 @@ document.addEventListener('DOMContentLoaded', () => {
         if (airComponents.pm2_5.toFixed(1) <= 15) { 
           header.style.backgroundColor = '#007bff';
           footer.style.backgroundColor = '#007bff';
-          document.getElementById("curr_AQ").innerHTML = "Current Air Quality is Very Good!";
+          document.getElementById("curr_AQ").innerHTML = "Current Air Quality is Very Good! 😀";
         } else if (airComponents.pm2_5.toFixed(1) <= 50) {
           header.style.backgroundColor = 'green';
           footer.style.backgroundColor = 'green';
-          document.getElementById("curr_AQ").innerHTML = "Current Air Quality is Good.";
+          document.getElementById("curr_AQ").innerHTML = "Current Air Quality is Good. 🙂";
         } else if (airComponents.pm2_5.toFixed(1) <= 100) {
           header.style.backgroundColor = 'orange';
           footer.style.backgroundColor = 'orange';
-          document.getElementById("curr_AQ").innerHTML = "Current Air Quality is Normal.";
+          document.getElementById("curr_AQ").innerHTML = "Current Air Quality is Normal. 😐";
         } else {
           header.style.backgroundColor = 'red';
           footer.style.backgroundColor = 'red';
-          document.getElementById("curr_AQ").innerHTML = "Current Air Quality is Bad!";
+          document.getElementById("curr_AQ").innerHTML = "Current Air Quality is Bad! 😢";
         }
 
 
@@ -447,7 +446,22 @@ document.getElementById('locationInput').addEventListener('keydown', function(ev
                 });
         }
     }
-});
+  });
+
+  // 클릭 이벤트 추가
+  map.on('click', function (event) {
+    // 클릭된 위치의 좌표 가져오기
+    const coordinate = event.coordinate;
+    
+    // 좌표를 위도/경도로 변환
+    const lonLat = ol.proj.toLonLat(coordinate);
+    const lon = lonLat[0];
+    const lat = lonLat[1];
+
+    getCityName(lat, lon);  // Get city name based on new coordinates
+    AQI(lat, lon);          // Update air quality and weather data with new coordinates
+    updateMapCenter(lat, lon); // 지도 위치 업데이트
+  });
 
 
 });

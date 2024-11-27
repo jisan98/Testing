@@ -395,58 +395,6 @@ document.addEventListener('DOMContentLoaded', () => {
           console.error("Error fetching city data: ", error);
         });
     }
-  });
-
-  let alertShown = false;  // 플래그 변수로 alert가 한 번만 뜨도록 설정
-
-document.getElementById('locationInput').addEventListener('keydown', function(event) {
-    // 엔터키가 눌렸을 때만 실행
-    if (event.key === 'Enter') {
-        const userInput = document.getElementById("locationInput").value.trim();
-
-        if (!userInput) {
-            alert("Please enter a city or coordinates.");
-            return;
-        }
-
-        // Check if the input is coordinates (lat, lon)
-        const isCoordinates = userInput.match(/^(-?\d+(\.\d+)?),\s*(-?\d+(\.\d+)?)$/);
-
-        if (isCoordinates) {
-            // If input is coordinates (lat, lon), parse and call AQI directly
-            const [lat, lon] = userInput.split(',').map(coord => parseFloat(coord.trim()));
-            getCityName(lat, lon);  // Get city name based on new coordinates
-            AQI(lat, lon);          // Update air quality and weather data with new coordinates
-            updateMapCenter(lat, lon); // 지도 위치 업데이트
-        } else {
-            // If input is a city name, fetch coordinates using OpenCage Geocoding API
-            const apiKey = '737bbe2e76644c178038fcaebc838642'; // OpenCage API key
-            const geocodeUrl = `https://api.opencagedata.com/geocode/v1/json?q=${userInput}&key=${apiKey}&language=en`;
-
-            fetch(geocodeUrl)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.results && data.results.length > 0) {
-                        const lat = data.results[0].geometry.lat;
-                        const lon = data.results[0].geometry.lng;
-                        getCityName(lat, lon);  // Get city name based on new coordinates
-                        AQI(lat, lon);          // Update air quality and weather data with new coordinates
-                        updateMapCenter(lat, lon); // 지도 위치 업데이트
-
-                        // 도시를 찾았으면 alert 플래그 초기화
-                        alertShown = false;
-                    } else {
-                        if (!alertShown) {
-                            alert("City not found.");
-                            alertShown = true;  // 알림 표시 후 플래그를 true로 설정하여 다시 표시되지 않도록 함
-                        }
-                    }
-                })
-                .catch(error => {
-                    console.error("Error fetching city data: ", error);
-                });
-        }
-    }
 });
 
 
